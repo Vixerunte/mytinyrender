@@ -24,7 +24,30 @@ struct TGAColor {
     std::uint8_t bgra[4] = {0,0,0,0};
     std::uint8_t bytespp = 4;
     std::uint8_t& operator[](const int i) { return bgra[i]; }
+    const std::uint8_t& operator[](const int i) const { return bgra[i]; }
+    TGAColor operator* (float k) const {
+        TGAColor p;
+        p.bgra[0] = static_cast<std::uint8_t>(bgra[0] * k);;
+        p.bgra[1] = static_cast<std::uint8_t>(bgra[1] * k);;
+        p.bgra[2] = static_cast<std::uint8_t>(bgra[2] * k);;
+        p.bgra[3] = static_cast<std::uint8_t>(bgra[3] * k);;
+
+        return p;
+    }
+
+    TGAColor operator+ (const TGAColor& color) const {
+        return{
+            static_cast<std::uint8_t>(this->bgra[0] + color.bgra[0]),
+            static_cast<std::uint8_t>(this->bgra[1] + color.bgra[1]),
+            static_cast<std::uint8_t>(this->bgra[2] + color.bgra[2]),
+            static_cast<std::uint8_t>(this->bgra[3] + color.bgra[3])
+        };
+    }
 };
+
+inline TGAColor operator* (float k, const TGAColor& color) {
+        return color * k;
+    }
 
 struct TGAImage {
     enum Format { GRAYSCALE=1, RGB=3, RGBA=4 };
