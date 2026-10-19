@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <cmath>
+#include<vector>
+#include<array>
 
 struct Point
 {
@@ -11,6 +13,11 @@ struct Point
     void print(){
         std::cout << x << ' ' << y << ' ' << z << std::endl;
     }
+};
+
+struct Vec2 {
+    float x;
+    float y;
 };
 
 struct Vec3 {
@@ -234,4 +241,26 @@ struct Mat4 {
 
         return viewport(ndc,width,height);
     }
+
+    static Mat4 orthographic(
+        float left, float right,
+        float bottom, float top,
+        float near, float far)
+    {
+        Mat4 result = Mat4::identity();
+
+        result.m[0][0] =  2.0f / (right - left);
+        result.m[0][3] = -(right + left) / (right - left);
+
+        result.m[1][1] =  2.0f / (top - bottom);
+        result.m[1][3] = -(top + bottom) / (top - bottom);
+
+        result.m[2][2] = -2.0f / (far - near);
+        result.m[2][3] = -(far + near) / (far - near);
+
+        return result;
+    }
 };
+
+
+
